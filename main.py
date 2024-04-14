@@ -202,12 +202,19 @@ with col2:
 st.divider()
 
 
-col1,col2,col3 = st.columns(3)
-with col1:
-    temp = (df.groupby('online_order').agg({'rate':'mean','votes':'mean','avg_cost_per_plate':'mean'})).round(2)
-    st.dataframe(temp)
+temp = (df.groupby('online_order').agg({'rate':'mean','votes':'mean','avg_cost_per_plate':'mean'})).round(2)
+st.dataframe(temp)
 
-with col2:
+fig = px.treemap(df, path=[px.Constant('Online Order Facility'), 'online_order', 'location'],
+                     color='avg_cost_per_plate', color_continuous_scale='plasma',
+                    title = 'Average Cost per plate based on Online/Offline Order facility')
+
+fig.update_layout(height = 500, width = 1200)
+st.plotly_chart(fig)
+
+col1,col2 = st.columns(2)
+
+with col1:
     st.markdown("""
 - **Rate:** Restaurants offering online orders (Yes) have a slightly higher average rating (3.23) compared to those without online orders (No) with a rating of 3.15.
 - **Votes:** Restaurants with online orders (Yes) receive more votes on average (307.92) compared to those without (No) with an average of 251.20 votes.
@@ -221,7 +228,7 @@ From this data:
    - the service provided.
  - Customers rate a restaurant based on how good the food tastes and looks, and how well they were treated by the staff.""")
 
-with col3 :
+with col2 :
   st.markdown("""  
  - While online ordering can be convenient, it doesn't really affect these important factors that shape the overall rating. So, while it's handy, it's not the main thing customers consider when rating a restaurant.
 
@@ -234,16 +241,19 @@ with col3 :
  - This might indicate that restaurants cater to a broader demographic, including customers who are more price-conscious and prefer the convenience of ordering online.
 """)
 
+
 st.divider()
 
 
-col1,col2 = st.columns(2)
-with col1:
-  temp = (df.groupby('book_table').agg({'rate':'mean','votes':'sum','avg_cost_per_plate':'mean'})).round(2)
-  st.dataframe(temp)
+temp = (df.groupby('book_table').agg({'rate':'mean','votes':'sum','avg_cost_per_plate':'mean'})).round(2)
+st.dataframe(temp)
 
-with col2:
-  st.markdown("""
+fig = px.treemap(df, path=[px.Constant('Book Table Facility'), 'book_table', 'location'], color='avg_cost_per_plate'
+                   , color_continuous_scale= 'plasma')
+fig.update_layout(height=500, width=1200)
+st.plotly_chart(fig)
+
+st.markdown("""
   - **Rate:** Restaurants with table booking (Yes) have a higher average rating (3.76) compared to those without (No) with a rating of 3.12.
   - **Votes:** There's a slightly higher number of votes for restaurants with table booking (7,355,716) compared to those without (7,219,584).
   - **Avg_cost_per_plate:** Restaurants with table booking (Yes) have a significantly higher average cost per plate (₹1215.30) compared to those without (No) with an average cost per plate of ₹387.54.
