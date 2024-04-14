@@ -622,14 +622,3 @@ footer_content = """
 # Display the footer
 st.markdown(footer_style, unsafe_allow_html=True)
 st.markdown(footer_content, unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
